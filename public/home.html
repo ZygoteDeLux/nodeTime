@@ -14,6 +14,18 @@
             text-align: center;
             margin-top: 20px;
         }
+        #quoteContainer {
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+        }
+
+        #getQuoteButton,
+        #quoteDisplay {
+        font-size: 25px;    
+        }
+
+
     </style>
 </head>
 <body>
@@ -29,11 +41,20 @@
         </select>
 
         <button type="submit">Submit</button>
+        
+        
     </form>
 
     <div id="timer" style="font-size: 48px; text-align: center;"></div>
 
+    <div id="quoteContainer">
+    <button id="getQuoteButton">Enjoy a quote!</button>
+    <p id="quoteDisplay"></p>
+    </div>
+
+
     <script>
+        
         const lifeExpectancyData = {
             'Denmark': {
               'male': 79, 
@@ -44,6 +65,8 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             document.getElementById('userInputForm').addEventListener('submit', handleFormSubmit);
         });
+
+        document.getElementById('getQuoteButton').addEventListener('click', getQuote);
 
         function handleFormSubmit(event) {
             event.preventDefault();
@@ -69,6 +92,24 @@
                 }
             }, 1000);
         }
+    
+        function getQuote() {
+        fetch('/getQuote')
+        .then(response => response.json())
+        .then(data => {
+      
+        const quote = data[0].q;
+        const author = data[0].a;
+
+        // Display the quote
+        document.getElementById('quoteDisplay').innerHTML = `<p>${quote}</p><p><strong>- ${author}</strong></p>`;
+        })
+        .catch(error => {
+        console.error('Error fetching quote:', error);
+        });
+
+        }
+
     </script>
 
 </body>
