@@ -1,7 +1,7 @@
-const express = require("express")
+const express = require("express");
 
 const app = express();
-const path = require('path');
+
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -12,12 +12,11 @@ app.get("/", (req, res) => {
 });
 
 
-// Initialize server
-const port = process.env.PORT || 5000;
-  app.listen(port, () => {
-    console.log(`Running on port ${port}.`);
+const PORT = 8080;
+app.listen(PORT, (error) => {
+    if (error) {
+        console.log("Server failed to start", error);
+        return;
+    }
+    console.log("Server is running on port", PORT);
 });
-
-
-// Export the Express API
-module.exports = app;
